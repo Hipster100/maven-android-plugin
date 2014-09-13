@@ -43,7 +43,7 @@
 
         <easymock.version>3.2</easymock.version>
         <powermock.version>1.5.2</powermock.version>
-
+        <takari.plugin.testing.version>1.9.0-SNAPSHOT</takari.plugin.testing.version>
         <!-- Attention - make sure that the tools version is the versions of the transitive dependencies of the builder version -->
         <!--  upgrade currently not possible since there are dependency conflicts between lint and maven-plugin-api 
         with regards to guava that break the test execution, see DependencyHierarchy analysis in Eclipse, need to investigate more -->
@@ -479,7 +479,7 @@
         <dependency>
           <groupId>io.takari.maven.plugins</groupId>
           <artifactId>takari-plugin-testing</artifactId>
-          <version>1.8.0-SNAPSHOT</version>
+          <version>${takari.plugin.testing.version}</version>
           <scope>test</scope>
         </dependency>
         
@@ -690,10 +690,11 @@
             <plugin>
               <groupId>io.takari.maven.plugins</groupId>
               <artifactId>takari-plugin-testing-plugin</artifactId>
-              <version>1.8.0-SNAPSHOT</version>
+              <version>${takari.plugin.testing.version}</version>
               <executions>
                 <execution>
                   <id>testProperties</id>
+                  <phase>process-test-resources</phase>
                   <goals>
                     <goal>testProperties</goal>
                   </goals>
@@ -714,17 +715,17 @@
                   <configuration>
                     <outputDirectory>${project.build.directory}/maven-installation</outputDirectory>
                     <artifactItems>
-                      <!-- <artifactItem> -->
-                      <!-- <groupId>org.apache.maven</groupId> -->
-                      <!-- <artifactId>apache-maven</artifactId> -->
-                      <!-- <version>3.2.1</version> -->
-                      <!-- <classifier>bin</classifier> -->
-                      <!-- <type>tar.gz</type> -->
-                      <!-- </artifactItem> -->
                       <artifactItem>
                         <groupId>org.apache.maven</groupId>
                         <artifactId>apache-maven</artifactId>
-                        <version>3.2.2</version>
+                        <version>3.0.5</version>
+                        <classifier>bin</classifier>
+                        <type>tar.gz</type>
+                      </artifactItem>
+                      <artifactItem>
+                        <groupId>org.apache.maven</groupId>
+                        <artifactId>apache-maven</artifactId>
+                        <version>3.2.3</version>
                         <classifier>bin</classifier>
                         <type>tar.gz</type>
                       </artifactItem>

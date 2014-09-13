@@ -2,37 +2,30 @@ package com.jayway.maven.plugins.android;
 
 import java.util.Arrays;
 
-import io.takari.maven.testing.it.VerifierRuntime;
+import io.takari.maven.testing.TestResources;
+import io.takari.maven.testing.executor.MavenExecutionResult;
+import io.takari.maven.testing.executor.MavenInstallations;
+import io.takari.maven.testing.executor.MavenRuntime;
+import io.takari.maven.testing.executor.MavenVersions;
+import io.takari.maven.testing.executor.MavenRuntime.MavenRuntimeBuilder;
+import io.takari.maven.testing.executor.junit.MavenJUnitTestRunner;
 
-import org.apache.maven.plugin.testing.resources.TestResources;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-@RunWith(Parameterized.class)
+@RunWith(MavenJUnitTestRunner.class)
+@MavenInstallations({"target/maven-installation/apache-maven-3.2.3"})
+@MavenVersions({"3.0.5", "3.2.3"})
 public abstract class AbstractAndroidMojoIntegrationTest {
 
   @Rule
-  public final TestResources resources;
+  public final TestResources resources = null;
+  
+  public final MavenRuntime verifier;
 
-  public final VerifierRuntime verifier;
-
-  protected AbstractAndroidMojoIntegrationTest(String mavenVersion) throws Exception {
-    this.resources = new TestResources("src/test/its", "target/it/" + mavenVersion + "/");
-    this.verifier = VerifierRuntime.builder(mavenVersion).build();
+  public AbstractAndroidMojoIntegrationTest(MavenRuntimeBuilder builder) throws Exception {
+    this.verifier = builder.withCliOptions("-X").build();
   }
-
-  /**
-   * The Maven versions used for running the IT tests. Requires config in pom.xml 
-   * with dependency plugin unpacking Maven version into ${project.build.directory}/maven-installation.
-   * @return
-   */
-  @Parameters(name = "maven-{0}")
-  public static Iterable<Object[]> mavenVersions() {
-    return Arrays.<Object[]>asList( 
-        //    new Object[] {"3.0.5"},
-        new Object[] {"3.2.2"} 
-        );
-  }  
 }
